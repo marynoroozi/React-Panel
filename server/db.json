@@ -1,0 +1,44 @@
+{
+  "contacts": [
+    {
+      "fullname": "Maryam Noroozi",
+      "photo": "https://lh3.googleusercontent.com/a/ACg8ocLznxGWYKVHWNCPOqz6KbB9QDoa9ejBPS2debzxt4w5fw=s360-c-no",
+      "mobile": "6476165818",
+      "email": "maryamnoroozi@avanad.com",
+      "job": "Avanade programmer",
+      "group": 1,
+      "id": 1
+    },
+    {
+      "fullname": "Saeed Shahrabi",
+      "photo": "https://media.licdn.com/dms/image/C4E03AQEDhR-I71FsjQ/profile-displayphoto-shrink_800_800/0/1650729979007?e=1711584000&v=beta&t=xy97Bm3e1uV5xCB1jSk240VGwP95w3EAVJfnCYSeOb8",
+      "mobile": "6476191120",
+      "email": "saeed@data.com",
+      "job": "data programmer",
+      "group": 1,
+      "id": 2
+    }
+  ],
+  "groups": [
+    {
+      "id": "1",
+      "name": "همکار"
+    },
+    {
+      "id": "2",
+      "name": "دوست"
+    },
+    {
+      "id": "3",
+      "name": "فامیل"
+    },
+    {
+      "id": "4",
+      "name": "سرویس "
+    },
+    {
+      "id": "5",
+      "name": "آشنا"
+    }
+  ]
+}

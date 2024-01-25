@@ -8,11 +8,35 @@ import {
   Navbar,
 } from "./components";
 import { Navigate, Route, Routes } from "react-router";
+import { useEffect } from "react";
+import axios from "axios";
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [getContacts, setContacts] = useState([]);
+  const [getGroups, setGroups] = useState([]);
   const [loading, setLoading] = useState(false);
-  const getContacts = () => {};
+
+  useEffect(() => {
+    getContactsData();
+  }, []);
+
+  const getContactsData = async () => {
+    try {
+      setLoading(true);
+      const { data: contactsData } = await axios.get(
+        "http://localhost:9000/contacts"
+      );
+      setContacts(contactsData);
+      const { data: groupsData } = await axios.get(
+        "http://localhost:9000/groups"
+      );
+      setGroups(groupsData);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="App">

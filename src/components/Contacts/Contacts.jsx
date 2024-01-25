@@ -11,7 +11,8 @@ import {
 import Spinner from "../spinner";
 import Contact from "./Contact";
 
-const Contacts = (props) => {
+const Contacts = ({ contacts }, { loading }) => {
+  // console.log(contacts, "from APP in contacts");
   return (
     <>
       <div className="container">
@@ -29,13 +30,16 @@ const Contacts = (props) => {
             </p>
           </div>
         </div>
-        {props.loading ? (
+        {loading ? (
           <Spinner />
         ) : (
           <div className="container">
             <div className="row">
-              {props.contacts.lenght > 0 ? (
-                props.contacts.map((item, index) => <Contact />)
+              {contacts.length > 0 ? (
+                contacts.map((item, index) => {
+                  // console.log(item, "item");
+                  return <Contact key={contacts.id} Contact={item} />;
+                })
               ) : (
                 <div
                   className="text-center py-5"
