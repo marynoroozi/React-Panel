@@ -7,6 +7,7 @@ import {
   CYAN,
   RED,
 } from "../../helpers/colors";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Contact = ({ Contact }) => {
   // console.log(Contact);
@@ -42,19 +43,20 @@ const Contact = ({ Contact }) => {
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: ORANGE }}
               >
-                <i className="fa fa-eye" />
+                {/* <FontAwesomeIcon icon={""} /> */}
+                <FontAwesomeIcon icon="fa-solid fa-eye" />
               </button>
               <button
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: CYAN }}
               >
-                <i className="fa fa-pen" />
+                <FontAwesomeIcon icon="fas fa-pencil-alt" />
               </button>
               <button
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: PURPLE }}
               >
-                <i className="fa fa-trash" />
+                <FontAwesomeIcon icon="fa-solid  fa-trash" />
               </button>
             </div>
           </div>
