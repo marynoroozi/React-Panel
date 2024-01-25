@@ -10,6 +10,7 @@ import {
 import { Navigate, Route, Routes } from "react-router";
 import { useEffect } from "react";
 import axios from "axios";
+import { getAllContacts, getAllGroups } from "./services/contactServices";
 
 const App = () => {
   const [getContacts, setContacts] = useState([]);
@@ -23,13 +24,10 @@ const App = () => {
   const getContactsData = async () => {
     try {
       setLoading(true);
-      const { data: contactsData } = await axios.get(
-        "http://localhost:9000/contacts"
-      );
+      const { data: contactsData } = await getAllContacts();
       setContacts(contactsData);
-      const { data: groupsData } = await axios.get(
-        "http://localhost:9000/groups"
-      );
+
+      const { data: groupsData } = await getAllGroups();
       setGroups(groupsData);
       setLoading(false);
     } catch (error) {
