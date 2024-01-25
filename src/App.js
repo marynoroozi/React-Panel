@@ -46,6 +46,10 @@ const App = () => {
           element={<Contacts contacts={getContacts} loading={loading} />}
         />
         <Route path="/contacts/:contactId" element={<ViewContacts />} />
+        <Route
+          path="/contacts/add"
+          element={<AddContacts loading={loading} />}
+        />
         <Route path="/contacts/edit/:contactId" element={<EditContacts />} />
       </Routes>
     </div>

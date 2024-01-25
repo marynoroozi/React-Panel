@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   PINK,
   FOREGROUND,
@@ -19,14 +20,15 @@ const Contacts = ({ contacts }, { loading }) => {
         <div className="row">
           <div className="col">
             <p className="h3">
-              <button
+              <Link
+                to={"/contacts/add"}
                 className="btn"
                 style={{ backgroundColor: PINK, color: FOREGROUND }}
               >
                 {" "}
                 Add New Contact
                 <span className="fas fa-plus-circle mx-2"></span>
-              </button>
+              </Link>
             </p>
           </div>
         </div>
