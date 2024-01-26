@@ -61,7 +61,10 @@ const App = () => {
             />
           }
         />
-        <Route path="/contacts/edit/:contactId" element={<EditContacts />} />
+        <Route
+          path="/contacts/edit/:contactId"
+          element={<EditContacts appRender={(data) => defineRender(data)} />}
+        />
       </Routes>
     </div>
   );

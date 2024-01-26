@@ -10,9 +10,10 @@ import {
   updateContact,
 } from "../../services/contactServices";
 
-const EditContacts = () => {
+const EditContacts = ({ appRender }) => {
   const { contactId } = useParams();
   const navigate = useNavigate();
+  const [forceRender, setForceRender] = useState(false);
   const [state, setState] = useState({
     loading: false,
     contact: {},
@@ -56,6 +57,8 @@ const EditContacts = () => {
       const { status } = await updateContact(contactId, contact);
       setState({ ...state, loading: false });
       if (status === 200) {
+        setForceRender(!forceRender);
+        appRender(forceRender);
         navigate("/contacts");
       }
     } catch (error) {
