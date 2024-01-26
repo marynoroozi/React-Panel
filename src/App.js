@@ -15,11 +15,12 @@ import { getAllContacts, getAllGroups } from "./services/contactServices";
 const App = () => {
   const [getContacts, setContacts] = useState([]);
   const [getGroups, setGroups] = useState([]);
+  const [forceRender, setForceRender] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getContactsData();
-  }, []);
+  }, [forceRender]);
 
   const getContactsData = async () => {
     try {
@@ -36,6 +37,10 @@ const App = () => {
     }
   };
 
+  const defineRender = (data) => {
+    setForceRender(data);
+  };
+
   return (
     <div className="App">
       <Navbar />
@@ -48,7 +53,13 @@ const App = () => {
         <Route path="/contacts/:contactId" element={<ViewContacts />} />
         <Route
           path="/contacts/add"
-          element={<AddContacts loading={loading} />}
+          element={
+            <AddContacts
+              getGroups={getGroups}
+              loading={loading}
+              appRender={(data) => defineRender(data)}
+            />
+          }
         />
         <Route path="/contacts/edit/:contactId" element={<EditContacts />} />
       </Routes>

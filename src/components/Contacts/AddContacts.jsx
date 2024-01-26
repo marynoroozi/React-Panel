@@ -1,8 +1,42 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { COMMENT, GREEN, PURPLE } from "../../helpers/colors";
 import Spinner from "../spinner";
+import { useState } from "react";
+import { createContact } from "../../services/contactServices";
 
-const AddContacts = ({ loading }) => {
+const AddContacts = ({ loading, getGroups, appRender }) => {
+  const navigate = useNavigate();
+  const [forceRender, setForceRender] = useState(false);
+  const [contact, setContact] = useState({
+    fullname: "",
+    photo: "",
+    mobile: "",
+    email: "",
+    job: "",
+    group: "",
+  });
+
+  const createContactForm = async (event) => {
+    event.preventDefault();
+    try {
+      // const res = await createContact(contact);
+      // console.log(res);
+      const { status } = await createContact(contact);
+      if (status === 201) {
+        setContact({});
+        setForceRender(!forceRender);
+        appRender(forceRender);
+        navigate("/contacts");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setContactInfo = (event) => {
+    setContact({ ...contact, [event.target.name]: event.target.value });
+  };
+
   return (
     <>
       {loading ? (
@@ -32,7 +66,7 @@ const AddContacts = ({ loading }) => {
             <hr style={{ backgroundColor: GREEN }} />
             <div className="row mt-5">
               <div className="col-md-4">
-                <form>
+                <form onSubmit={createContactForm}>
                   <div className="mb-2">
                     <input
                       type="text"
@@ -40,6 +74,8 @@ const AddContacts = ({ loading }) => {
                       placeholder="Firstname and lastname"
                       className="form-control"
                       required={true}
+                      onChange={setContactInfo}
+                      value={contact.fullname}
                     />
                   </div>
                   <div className="mb-2">
@@ -49,6 +85,8 @@ const AddContacts = ({ loading }) => {
                       placeholder="Image address"
                       className="form-control"
                       // required={true}
+                      onChange={setContactInfo}
+                      value={contact.photo}
                     />
                   </div>
                   <div className="mb-2">
@@ -58,6 +96,8 @@ const AddContacts = ({ loading }) => {
                       placeholder="Phone number"
                       className="form-control"
                       required={true}
+                      onChange={setContactInfo}
+                      value={contact.mobile}
                     />
                   </div>
                   <div className="mb-2">
@@ -67,6 +107,8 @@ const AddContacts = ({ loading }) => {
                       placeholder="Email address"
                       className="form-control"
                       required={true}
+                      onChange={setContactInfo}
+                      value={contact.email}
                     />
                   </div>
                   <div className="mb-2">
@@ -76,6 +118,8 @@ const AddContacts = ({ loading }) => {
                       placeholder="job"
                       className="form-control"
                       required={true}
+                      onChange={setContactInfo}
+                      value={contact.job}
                     />
                   </div>
                   <div className="mb-2">
@@ -83,8 +127,17 @@ const AddContacts = ({ loading }) => {
                       name="group"
                       className="form-control"
                       required={true}
+                      onChange={setContactInfo}
+                      value={contact.group}
                     >
                       <option value="">select a group</option>
+                      {getGroups.length > 0 &&
+                        getGroups.map((group) => (
+                          <option key={group.id} value={group.id}>
+                            {" "}
+                            {group.name}{" "}
+                          </option>
+                        ))}
                     </select>
                   </div>
                   <div className="mb-2">
