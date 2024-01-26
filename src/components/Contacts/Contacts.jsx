@@ -43,7 +43,7 @@ const Contacts = ({ contacts, loading, appRender }) => {
                   // console.log(item, "item");
                   return (
                     <Contact
-                      key={contacts.id}
+                      key={item.id}
                       Contact={item}
                       loading={loading}
                       forceRender={(data) => appRender(data)}
