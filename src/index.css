@@ -1,9 +1,11 @@
+
 body {
   background-color: #282a36;
   font-family: "KG Primary Italics", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: white;
 }
 
 input[type="text"]::-webkit-input-placeholder,

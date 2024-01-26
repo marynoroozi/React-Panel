@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   PINK,
   FOREGROUND,
@@ -11,31 +12,36 @@ import {
 import Spinner from "../spinner";
 import Contact from "./Contact";
 
-const Contacts = (props) => {
+const Contacts = ({ contacts }, { loading }) => {
+  // console.log(contacts, "from APP in contacts");
   return (
     <>
       <div className="container">
         <div className="row">
           <div className="col">
             <p className="h3">
-              <button
+              <Link
+                to={"/contacts/add"}
                 className="btn"
                 style={{ backgroundColor: PINK, color: FOREGROUND }}
               >
                 {" "}
                 Add New Contact
                 <span className="fas fa-plus-circle mx-2"></span>
-              </button>
+              </Link>
             </p>
           </div>
         </div>
-        {props.loading ? (
+        {loading ? (
           <Spinner />
         ) : (
           <div className="container">
             <div className="row">
-              {props.contacts.lenght > 0 ? (
-                props.contacts.map((item, index) => <Contact />)
+              {contacts.length > 0 ? (
+                contacts.map((item, index) => {
+                  // console.log(item, "item");
+                  return <Contact key={contacts.id} Contact={item} />;
+                })
               ) : (
                 <div
                   className="text-center py-5"

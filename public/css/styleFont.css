@@ -1,11 +1,1 @@
-@font-face {
-  font-family: "KG Primary Italics";
-  src: url("../fonts/KGPrimaryItalics.eot");
-  src: url("../fonts/KGPrimaryItalics.eot?#iefix") format("embedded-opentype"),
-    url("../fonts/KGPrimaryItalics.woff2") format("woff2"),
-    url("../fonts/KGPrimaryItalics.woff") format("woff"),
-    url("../fonts/KGPrimaryItalics.ttf") format("truetype");
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
-}
+
