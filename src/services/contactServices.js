@@ -47,5 +47,5 @@ export const updateContact = (contactId, contact) => {
 // @route GET http://localhost:9000/contacts/:contactId
 export const deleteContact = (contactId) => {
   const url = `${contactServer_url}/contacts/${contactId}`;
-  return axios.get(url);
+  return axios.delete(url);
 };
