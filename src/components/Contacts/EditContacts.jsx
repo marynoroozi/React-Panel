@@ -13,7 +13,7 @@ import {
 const EditContacts = ({ appRender }) => {
   const { contactId } = useParams();
   const navigate = useNavigate();
-  const [forceRender, setForceRender] = useState(false);
+  // const [forceRender, setForceRender] = useState(false);
   const [state, setState] = useState({
     loading: false,
     contact: {},
@@ -57,8 +57,8 @@ const EditContacts = ({ appRender }) => {
       const { status } = await updateContact(contactId, contact);
       setState({ ...state, loading: false });
       if (status === 200) {
-        setForceRender(!forceRender);
-        appRender(forceRender);
+        // setForceRender(!forceRender);
+        appRender(true);
         navigate("/contacts");
       }
     } catch (error) {
