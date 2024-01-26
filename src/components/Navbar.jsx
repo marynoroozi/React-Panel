@@ -7,7 +7,7 @@ const Navbar = () => {
       class="navbar navbar-expand-md navbar-dark bg-dark"
       aria-label="Fourth navbar example"
     >
-      <div class="container-fluid">
+      <div class="container">
         <a class="navbar-brand" href="#" style={{ color: GREEN }}>
           <span className="fas fa-id-card mx-3"> </span>
           Contact Manager Application
