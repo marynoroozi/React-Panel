@@ -1,7 +1,6 @@
 import axios from "axios";
 const contactServer_url = "http://localhost:9000";
 
-
 // @desc Get All Contacts
 // @route GET http://localhost:9000/contacts
 export const getAllContacts = () => {
@@ -41,7 +40,7 @@ export const createContact = (contact) => {
 // @route GET http://localhost:9000/contacts/:contactId
 export const updateContact = (contactId, contact) => {
   const url = `${contactServer_url}/contacts/${contactId}`;
-  return axios.get(url, contact);
+  return axios.patch(url, contact);
 };
 
 // @desc Delete a Contact with a Contact ID
@@ -50,4 +49,3 @@ export const deleteContact = (contactId) => {
   const url = `${contactServer_url}/contacts/${contactId}`;
   return axios.get(url);
 };
-
