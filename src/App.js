@@ -21,6 +21,8 @@ const App = () => {
   const [getGroups, setGroups] = useState([]);
   const [forceRender, setForceRender] = useState();
   const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState("");
+  const [filteredContacts, setFilteredContacts] = useState([]);
 
   useEffect(() => {
     getContactsData();
@@ -46,16 +48,29 @@ const App = () => {
     setForceRender(data);
   };
 
+  const searchContacts = (e) => {
+    setQuery(e.target.value);
+    console.log(e.target.value);
+    const filtered = getContacts.filter((contact) => {
+      return contact.fullname
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
+    console.log(filtered);
+    setFilteredContacts(filtered);
+  };
+  const contacts = filteredContacts.length ? filteredContacts : getContacts;
+
   return (
     <div className="App">
-      <Navbar />
+      <Navbar searchContact={searchContacts} query={query} />
       <Routes>
         <Route path="/" element={<Navigate to="/contacts" />} />
         <Route
           path="/contacts"
           element={
             <Contacts
-              contacts={getContacts}
+              contacts={contacts}
               loading={loading}
               // forceRender={(data) => forceRende(data)}
               appRender={(data) => defineRender(data)}
