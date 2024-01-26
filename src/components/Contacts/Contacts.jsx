@@ -12,8 +12,9 @@ import {
 import Spinner from "../spinner";
 import Contact from "./Contact";
 
-const Contacts = ({ contacts }, { loading }) => {
+const Contacts = ({ contacts, loading, appRender }) => {
   // console.log(contacts, "from APP in contacts");
+
   return (
     <>
       <div className="container">
@@ -40,7 +41,14 @@ const Contacts = ({ contacts }, { loading }) => {
               {contacts.length > 0 ? (
                 contacts.map((item, index) => {
                   // console.log(item, "item");
-                  return <Contact key={contacts.id} Contact={item} />;
+                  return (
+                    <Contact
+                      key={contacts.id}
+                      Contact={item}
+                      loading={loading}
+                      forceRender={(data) => appRender(data)}
+                    />
+                  );
                 })
               ) : (
                 <div

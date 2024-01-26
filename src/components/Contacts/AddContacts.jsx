@@ -6,7 +6,7 @@ import { createContact } from "../../services/contactServices";
 
 const AddContacts = ({ loading, getGroups, appRender }) => {
   const navigate = useNavigate();
-  const [forceRender, setForceRender] = useState(false);
+  // const [forceRender, setForceRender] = useState(false);
   const [contact, setContact] = useState({
     fullname: "",
     photo: "",
@@ -24,8 +24,8 @@ const AddContacts = ({ loading, getGroups, appRender }) => {
       const { status } = await createContact(contact);
       if (status === 201) {
         setContact({});
-        setForceRender(!forceRender);
-        appRender(forceRender);
+        // setForceRender(true);
+        appRender(true);
         navigate("/contacts");
       }
     } catch (error) {

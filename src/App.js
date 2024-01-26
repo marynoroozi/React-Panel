@@ -10,7 +10,11 @@ import {
 import { Navigate, Route, Routes } from "react-router";
 import { useEffect } from "react";
 import axios from "axios";
-import { getAllContacts, getAllGroups } from "./services/contactServices";
+import {
+  deleteContact,
+  getAllContacts,
+  getAllGroups,
+} from "./services/contactServices";
 
 const App = () => {
   const [getContacts, setContacts] = useState([]);
@@ -27,7 +31,7 @@ const App = () => {
       setLoading(true);
       const { data: contactsData } = await getAllContacts();
       setContacts(contactsData);
-
+      setForceRender(false);
       const { data: groupsData } = await getAllGroups();
       setGroups(groupsData);
       setLoading(false);
@@ -38,6 +42,7 @@ const App = () => {
   };
 
   const defineRender = (data) => {
+    // console.log(data, "forcrender");
     setForceRender(data);
   };
 
@@ -48,7 +53,14 @@ const App = () => {
         <Route path="/" element={<Navigate to="/contacts" />} />
         <Route
           path="/contacts"
-          element={<Contacts contacts={getContacts} loading={loading} />}
+          element={
+            <Contacts
+              contacts={getContacts}
+              loading={loading}
+              // forceRender={(data) => forceRende(data)}
+              appRender={(data) => defineRender(data)}
+            />
+          }
         />
         <Route path="/contacts/:contactId" element={<ViewContacts />} />
         <Route
@@ -61,7 +73,10 @@ const App = () => {
             />
           }
         />
-        <Route path="/contacts/edit/:contactId" element={<EditContacts />} />
+        <Route
+          path="/contacts/edit/:contactId"
+          element={<EditContacts appRender={(data) => defineRender(data)} />}
+        />
       </Routes>
     </div>
   );

@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert"; // Import
 import {
   PINK,
   FOREGROUND,
@@ -9,9 +10,47 @@ import {
   RED,
 } from "../../helpers/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { deleteContact } from "../../services/contactServices";
+import { useState } from "react";
+import { EyeFill, PencilFill, TrashFill } from "react-bootstrap-icons";
+// import * as Icon from "react-bootstrap-icons";
 
-const Contact = ({ Contact }) => {
+const Contact = ({ Contact, forceRender }) => {
   // console.log(Contact);
+  const [loading, setLoading] = useState(false);
+  // const[render, setRender] = useState(false)
+  const navigate = useNavigate();
+
+  const removeContact = () => {
+    confirmAlert({
+      title: "Confirm to submit",
+      message: "Are you sure to do this.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            try {
+              setLoading(!loading);
+              const res = await deleteContact(Contact.id);
+              setLoading(!loading);
+              forceRender(true);
+              navigate("/contacts");
+              console.log(res);
+            } catch (error) {
+              console.log(error);
+            }
+          },
+        },
+        {
+          label: "No",
+          onClick: () => "",
+        },
+      ],
+      closeOnEscape: true,
+      closeOnClickOutside: true,
+    });
+  };
+
   return (
     <div className="col-md-6">
       <div className="card my-2">
@@ -45,21 +84,21 @@ const Contact = ({ Contact }) => {
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: ORANGE }}
               >
-                {/* <FontAwesomeIcon icon={""} /> */}
-                <FontAwesomeIcon icon="fa-solid fa-eye" />
+                <EyeFill />
               </Link>
               <Link
                 to={`/contacts/edit/${Contact.id}`}
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: CYAN }}
               >
-                <FontAwesomeIcon icon="fas fa-pencil-alt" />
+                <PencilFill />
               </Link>
               <button
+                onClick={removeContact}
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: PURPLE }}
               >
-                <FontAwesomeIcon icon="fa-solid  fa-trash" />
+                <TrashFill />
               </button>
             </div>
           </div>
