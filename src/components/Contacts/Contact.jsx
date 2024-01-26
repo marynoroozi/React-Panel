@@ -48,12 +48,13 @@ const Contact = ({ Contact }) => {
                 {/* <FontAwesomeIcon icon={""} /> */}
                 <FontAwesomeIcon icon="fa-solid fa-eye" />
               </Link>
-              <button
+              <Link
+                to={`/contacts/edit/${Contact.id}`}
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: CYAN }}
               >
                 <FontAwesomeIcon icon="fas fa-pencil-alt" />
-              </button>
+              </Link>
               <button
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: PURPLE }}
