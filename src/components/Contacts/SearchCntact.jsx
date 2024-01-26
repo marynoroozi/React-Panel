@@ -1,3 +1,5 @@
+import { Search } from "react-bootstrap-icons";
+
 const SearchContact = () => {
   return (
     <>
@@ -10,7 +12,7 @@ const SearchContact = () => {
             aria-label="Search"
           />
           <span
-            className="fas fa-search border rounded mx-1"
+            className="bi bi-search border rounded mx-1"
             style={{
               color: "greenyellow",
               width: 57,
@@ -18,7 +20,9 @@ const SearchContact = () => {
               justifyContent: "center",
               display: "flex",
             }}
-          ></span>
+          >
+            <Search />
+          </span>
         </div>
       </form>
     </>
