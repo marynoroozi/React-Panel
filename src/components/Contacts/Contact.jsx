@@ -66,14 +66,14 @@ const Contact = ({ Contact, forceRender }) => {
             </div>
             <div className="col-md-7 col-sm-7">
               <ul className="list-group">
-                <li class="list-group-item list-group-item-dark">
+                <li className="list-group-item list-group-item-dark">
                   Name: <span className="fw-bold"> {Contact.fullname}</span>
                 </li>
-                <li class="list-group-item list-group-item-dark">
+                <li className="list-group-item list-group-item-dark">
                   Phone Number:{" "}
                   <span className="fw-bold"> {Contact.mobile}</span>
                 </li>
-                <li class="list-group-item list-group-item-dark">
+                <li className="list-group-item list-group-item-dark">
                   Email: <span className="fw-bold"> {Contact.email}</span>
                 </li>
               </ul>

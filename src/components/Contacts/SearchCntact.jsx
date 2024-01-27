@@ -1,18 +1,20 @@
 import { Search } from "react-bootstrap-icons";
 
-const SearchContact = () => {
+const SearchContact = ({ searchContact, query }) => {
   return (
     <>
       <form role="search">
         <div style={{ display: "flex" }}>
           <input
-            class="form-control"
+            className="form-control"
             type="search"
+            onChange={searchContact}
+            value={query}
             placeholder="Search"
             aria-label="Search"
           />
           <span
-            className="bi bi-search border rounded mx-1"
+            className="border rounded mx-1"
             style={{
               color: "greenyellow",
               width: 57,
