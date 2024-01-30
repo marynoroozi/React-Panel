@@ -1,19 +1,18 @@
 import { Link } from "react-router-dom";
-import {
-  PINK,
-  FOREGROUND,
-  ORANGE,
-  PURPLE,
-  GREEN,
-  CYAN,
-  RED,
-  CURRENTLINE,
-} from "../../helpers/colors";
+import { PINK, FOREGROUND, ORANGE, CURRENTLINE } from "../../helpers/colors";
 import Spinner from "../spinner";
 import Contact from "./Contact";
+import { useContext } from "react";
+import { contactContext } from "../../context/contactContext";
 
-const Contacts = ({ contacts, loading, appRender }) => {
+const Contacts = () => {
   // console.log(contacts, "from APP in contacts");
+
+  const { contacts, loading, filteredContacts, removeContact } =
+    useContext(contactContext);
+
+  const showContacts =
+    filteredContacts.length > 0 ? filteredContacts : contacts;
 
   return (
     <>
@@ -38,15 +37,16 @@ const Contacts = ({ contacts, loading, appRender }) => {
         ) : (
           <div className="container">
             <div className="row">
-              {contacts.length > 0 ? (
-                contacts.map((item, index) => {
+              {showContacts.length > 0 ? (
+                showContacts.map((item, index) => {
                   // console.log(item, "item");
                   return (
                     <Contact
                       key={item.id}
                       Contact={item}
-                      loading={loading}
-                      forceRender={(data) => appRender(data)}
+                      confirmDelete={() =>
+                        removeContact(item.id, item.fullname)
+                      }
                     />
                   );
                 })
