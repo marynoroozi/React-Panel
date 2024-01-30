@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import { confirmAlert } from "react-confirm-alert"; // Import
 import {
   PINK,
   FOREGROUND,
@@ -9,48 +8,13 @@ import {
   CYAN,
   RED,
 } from "../../helpers/colors";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { deleteContact } from "../../services/contactServices";
-import { useState } from "react";
 import { EyeFill, PencilFill, TrashFill } from "react-bootstrap-icons";
+import { useContext } from "react";
+import { contactContext } from "../../context/contactContext";
 // import * as Icon from "react-bootstrap-icons";
 
-const Contact = ({ Contact, forceRender }) => {
-  // console.log(Contact);
-  const [loading, setLoading] = useState(false);
-  // const[render, setRender] = useState(false)
-  const navigate = useNavigate();
-
-  const removeContact = () => {
-    confirmAlert({
-      title: "Confirm to submit",
-      message: "Are you sure to do this.",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: async () => {
-            try {
-              setLoading(!loading);
-              const res = await deleteContact(Contact.id);
-              setLoading(!loading);
-              forceRender(true);
-              navigate("/contacts");
-              console.log(res);
-            } catch (error) {
-              console.log(error);
-            }
-          },
-        },
-        {
-          label: "No",
-          onClick: () => "",
-        },
-      ],
-      closeOnEscape: true,
-      closeOnClickOutside: true,
-    });
-  };
-
+const Contact = ({ Contact, confirmDelete }) => {
+  // const { removeContact } = useContext(contactContext);
   return (
     <div className="col-md-6">
       <div className="card my-2">
@@ -94,7 +58,7 @@ const Contact = ({ Contact, forceRender }) => {
                 <PencilFill />
               </Link>
               <button
-                onClick={removeContact}
+                onClick={confirmDelete}
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: PURPLE }}
               >
