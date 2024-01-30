@@ -2,7 +2,7 @@ import SearchContact from "./Contacts/SearchCntact";
 import { GREEN } from "../helpers/colors";
 import { useLocation } from "react-router-dom";
 
-const Navbar = ({ searchContact, query }) => {
+const Navbar = () => {
   const location = useLocation();
   return (
     <nav
@@ -72,9 +72,7 @@ const Navbar = ({ searchContact, query }) => {
             </li>
           </ul>
         </div>
-        {location.pathname === `/contacts` && (
-          <SearchContact searchContact={searchContact} query={query} />
-        )}
+        {location.pathname === `/contacts` && <SearchContact />}
       </div>
     </nav>
   );

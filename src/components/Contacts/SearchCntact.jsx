@@ -1,6 +1,10 @@
 import { Search } from "react-bootstrap-icons";
+import { useContext } from "react";
+import { contactContext } from "../../context/contactContext";
 
-const SearchContact = ({ searchContact, query }) => {
+const SearchContact = () => {
+  const { searchContacts, contactQuery } = useContext(contactContext);
+
   return (
     <>
       <form role="search">
@@ -8,8 +12,8 @@ const SearchContact = ({ searchContact, query }) => {
           <input
             className="form-control"
             type="search"
-            onChange={searchContact}
-            value={query}
+            onChange={searchContacts}
+            value={contactQuery}
             placeholder="Search"
             aria-label="Search"
           />

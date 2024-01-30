@@ -1,41 +1,13 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { COMMENT, GREEN, PURPLE } from "../../helpers/colors";
 import Spinner from "../spinner";
 import { useState } from "react";
-import { createContact } from "../../services/contactServices";
+import { useContext } from "react";
+import { contactContext } from "../../context/contactContext";
 
-const AddContacts = ({ loading, getGroups, appRender }) => {
-  const navigate = useNavigate();
-  // const [forceRender, setForceRender] = useState(false);
-  const [contact, setContact] = useState({
-    fullname: "",
-    photo: "",
-    mobile: "",
-    email: "",
-    job: "",
-    group: "",
-  });
-
-  const createContactForm = async (event) => {
-    event.preventDefault();
-    try {
-      // const res = await createContact(contact);
-      // console.log(res);
-      const { status } = await createContact(contact);
-      if (status === 201) {
-        setContact({});
-        // setForceRender(true);
-        appRender(true);
-        navigate("/contacts");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const setContactInfo = (event) => {
-    setContact({ ...contact, [event.target.name]: event.target.value });
-  };
+const AddContacts = () => {
+  const { loading, groups, contact, onContactChange, createContactForm } =
+    useContext(contactContext);
 
   return (
     <>
@@ -74,7 +46,7 @@ const AddContacts = ({ loading, getGroups, appRender }) => {
                       placeholder="Firstname and lastname"
                       className="form-control"
                       required={true}
-                      onChange={setContactInfo}
+                      onChange={onContactChange}
                       value={contact.fullname}
                     />
                   </div>
@@ -85,7 +57,7 @@ const AddContacts = ({ loading, getGroups, appRender }) => {
                       placeholder="Image address"
                       className="form-control"
                       // required={true}
-                      onChange={setContactInfo}
+                      onChange={onContactChange}
                       value={contact.photo}
                     />
                   </div>
@@ -96,7 +68,7 @@ const AddContacts = ({ loading, getGroups, appRender }) => {
                       placeholder="Phone number"
                       className="form-control"
                       required={true}
-                      onChange={setContactInfo}
+                      onChange={onContactChange}
                       value={contact.mobile}
                     />
                   </div>
@@ -107,7 +79,7 @@ const AddContacts = ({ loading, getGroups, appRender }) => {
                       placeholder="Email address"
                       className="form-control"
                       required={true}
-                      onChange={setContactInfo}
+                      onChange={onContactChange}
                       value={contact.email}
                     />
                   </div>
@@ -118,7 +90,7 @@ const AddContacts = ({ loading, getGroups, appRender }) => {
                       placeholder="job"
                       className="form-control"
                       required={true}
-                      onChange={setContactInfo}
+                      onChange={onContactChange}
                       value={contact.job}
                     />
                   </div>
@@ -127,12 +99,12 @@ const AddContacts = ({ loading, getGroups, appRender }) => {
                       name="group"
                       className="form-control"
                       required={true}
-                      onChange={setContactInfo}
+                      onChange={onContactChange}
                       value={contact.group}
                     >
                       <option value="">select a group</option>
-                      {getGroups.length > 0 &&
-                        getGroups.map((group) => (
+                      {groups.length > 0 &&
+                        groups.map((group) => (
                           <option key={group.id} value={group.id}>
                             {" "}
                             {group.name}{" "}

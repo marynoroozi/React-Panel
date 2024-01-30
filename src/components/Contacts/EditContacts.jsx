@@ -1,7 +1,7 @@
 import { Spinner } from "react-bootstrap";
 import { COMMENT, ORANGE, PURPLE } from "../../helpers/colors";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Contact from "./Contact";
 import {
   getAllGroups,
@@ -9,62 +9,73 @@ import {
   getGroup,
   updateContact,
 } from "../../services/contactServices";
+import { contactContext } from "../../context/contactContext";
 
-const EditContacts = ({ appRender }) => {
+const EditContacts = () => {
+  const { loading, setLoading, contacts, setContacts, groups } =
+    useContext(contactContext);
+  const [contact, setContact] = useState({});
   const { contactId } = useParams();
   const navigate = useNavigate();
-  // const [forceRender, setForceRender] = useState(false);
-  const [state, setState] = useState({
-    loading: false,
-    contact: {},
-    groups: [],
-  });
-  const { loading, contact, groups } = state;
 
   useEffect(() => {
     getContactInfo();
-  }, []);
+  }, [contactId]);
 
   const getContactInfo = async () => {
     try {
-      setState({ ...state, loading: true });
+      setLoading(true);
       const { data: contactInfo } = await getContact(contactId);
-      const { data: groups } = await getAllGroups();
-      setState({
-        loading: false,
-        contact: contactInfo,
-        groups: groups,
-      });
+      setContact(contactInfo);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
-  const editContactInfo = (e) => {
-    setState({
-      ...state,
-      contact: {
-        ...state.contact,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
-
-  const submitForm = async (e) => {
+  const updateContactInfo = async (e) => {
     e.preventDefault();
     try {
-      setState({ ...state, loading: true });
-      const { status } = await updateContact(contactId, contact);
-      setState({ ...state, loading: false });
+      setLoading(true);
+      // Copy State
+      // Update State
+      // Send Request
+      // status === 200 -> do nothing
+      // status === error -> setState(copyState)
+      const { status, data } = await updateContact(contactId, contact);
+
+      /*
+       * NOTE
+       * 1- forceRender -> setForceRender(true)
+       * 2- Send request server
+       * 3- Update Local state
+       * 4- Update Local state before sending request to server
+       */
+
+      // console.log(data);
       if (status === 200) {
-        // setForceRender(!forceRender);
-        appRender(true);
+        setLoading(false);
+
+        const allContacts = [...contacts];
+        console.log(allContacts, "all");
+        const contactIndex = allContacts.findIndex(
+          (c) => c.id === parseInt(contactId)
+        );
+        console.log(contactIndex, "index");
+        allContacts[contactIndex] = { ...data };
+        setContacts(allContacts);
+
         navigate("/contacts");
       }
     } catch (error) {
-      setState({ ...state, loading: false });
+      setLoading(false);
       console.log(error);
     }
+  };
+
+  const onContactChange = (event) => {
+    setContact({ ...contact, [event.target.name]: event.target.value });
   };
 
   return (
@@ -88,14 +99,16 @@ const EditContacts = ({ appRender }) => {
                 style={{ backgroundColor: "#44475a", borderRadius: "1em" }}
               >
                 <div className="col-md-8">
-                  <form onSubmit={submitForm}>
+                  <form
+                    onSubmit={(e, contactId) => updateContactInfo(e, contactId)}
+                  >
                     <div className="mb-2">
                       <input
                         name="fullname"
                         type="text"
                         className="form-control"
                         value={contact.fullname}
-                        onChange={(e) => editContactInfo(e)}
+                        onChange={(e) => onContactChange(e)}
                         required={true}
                         placeholder="Fullname"
                       />
@@ -104,7 +117,7 @@ const EditContacts = ({ appRender }) => {
                       <input
                         name="photo"
                         type="text"
-                        onChange={(e) => editContactInfo(e)}
+                        onChange={(e) => onContactChange(e)}
                         value={contact.photo}
                         className="form-control"
                         required={true}
@@ -115,7 +128,7 @@ const EditContacts = ({ appRender }) => {
                       <input
                         name="mobile"
                         type="number"
-                        onChange={(e) => editContactInfo(e)}
+                        onChange={(e) => onContactChange(e)}
                         className="form-control"
                         value={contact.mobile}
                         required={true}
@@ -126,7 +139,7 @@ const EditContacts = ({ appRender }) => {
                       <input
                         name="email"
                         type="email"
-                        onChange={(e) => editContactInfo(e)}
+                        onChange={(e) => onContactChange(e)}
                         className="form-control"
                         value={contact.email}
                         required={true}
@@ -137,7 +150,7 @@ const EditContacts = ({ appRender }) => {
                       <input
                         name="job"
                         type="text"
-                        onChange={(e) => editContactInfo(e)}
+                        onChange={(e) => onContactChange(e)}
                         className="form-control"
                         value={contact.job}
                         required={true}
@@ -150,7 +163,7 @@ const EditContacts = ({ appRender }) => {
                         required={true}
                         className="form-control"
                         value={contact.group}
-                        onChange={editContactInfo}
+                        onChange={onContactChange}
                       >
                         <option value="">Select a group</option>
                         {Object.keys(groups).length > 0 &&
