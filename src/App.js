@@ -74,6 +74,29 @@ const App = () => {
     }, 1000);
   };
 
+  // const searchContacts = (query) => {
+  //   // console.log(query);
+
+  //   setFilteredContacts(
+  //     contacts.filter((contact) => {
+  //       return contact.fullname.toLowerCase().includes(query.toLowerCase());
+  //     })
+  //   );
+  // };
+
+  // function debounce(func, time) {
+  //   let timer;
+
+  //   // we should get a func with its arguments and cause a delay on its implementation and then return it.
+  //   return (...args) => {
+  //     clearTimeout(timer);
+
+  //     if (!args) return setFilteredContacts([...contacts]);
+
+  //     timer = setTimeout(() => func(...args), time);
+  //   };
+  // }
+
   const createContactForm = async (event) => {
     event.preventDefault();
     try {
