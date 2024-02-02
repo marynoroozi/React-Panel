@@ -187,6 +187,19 @@ const App = () => {
     });
   };
 
+  const leadingDebounce = (func, time) => {
+    let timer;
+    return (...args) => {
+      if (!timer) {
+        func(...args);
+      }
+
+      clearTimeout(timer);
+
+      timer = setTimeout(() => (timer = undefined), time);
+    };
+  };
+
   return (
     <contactContext.Provider
       value={{
@@ -202,6 +215,7 @@ const App = () => {
         createContactForm,
         searchContacts,
         removeContact,
+        leadingDebounce,
       }}
     >
       <div className="App">

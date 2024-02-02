@@ -14,4 +14,5 @@ export const contactContext = React.createContext({
   updateContactInfo: () => {},
   removeContact: () => {},
   // debounce: () => {},
+  leadingDebounce: () => {},
 });
