@@ -6,13 +6,11 @@ import { useContext } from "react";
 import { contactContext } from "../../context/contactContext";
 
 const Contacts = () => {
-  // console.log(contacts, "from APP in contacts");
-
   const { contacts, loading, filteredContacts, removeContact } =
     useContext(contactContext);
 
-  const showContacts =
-    filteredContacts.length > 0 ? filteredContacts : contacts;
+  // console.log(filteredContacts, "from APP in contacts");
+  // const showContacts = filteredContacts.length > 0 ? filteredContacts : contacts;
 
   return (
     <>
@@ -37,8 +35,8 @@ const Contacts = () => {
         ) : (
           <div className="container">
             <div className="row">
-              {showContacts.length > 0 ? (
-                showContacts.map((item, index) => {
+              {filteredContacts.length > 0 ? (
+                filteredContacts.map((item, index) => {
                   // console.log(item, "item");
                   return (
                     <Contact

@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { contactContext } from "../../context/contactContext";
 
 const SearchContact = () => {
-  const { searchContacts, contactQuery } = useContext(contactContext);
+  const { searchContacts } = useContext(contactContext);
 
   return (
     <>
@@ -12,8 +12,7 @@ const SearchContact = () => {
           <input
             className="form-control"
             type="search"
-            onChange={searchContacts}
-            value={contactQuery}
+            onChange={(e) => searchContacts(e.target.value)}
             placeholder="Search"
             aria-label="Search"
           />
