@@ -6,8 +6,14 @@ import { useContext } from "react";
 import { contactContext } from "../../context/contactContext";
 
 const AddContacts = () => {
-  const { loading, groups, contact, onContactChange, createContactForm } =
-    useContext(contactContext);
+  const {
+    loading,
+    groups,
+    contact,
+    onContactChange,
+    createContactForm,
+    error,
+  } = useContext(contactContext);
 
   return (
     <>
@@ -39,13 +45,18 @@ const AddContacts = () => {
             <div className="row mt-5">
               <div className="col-md-4">
                 <form onSubmit={createContactForm}>
+                  {error?.map((item, index) => (
+                    <p key={index} className="text-danger">
+                      {item.message}
+                    </p>
+                  ))}
                   <div className="mb-2">
                     <input
                       type="text"
                       name="fullname"
                       placeholder="Firstname and lastname"
                       className="form-control"
-                      required={true}
+                      // required={true}
                       onChange={onContactChange}
                       value={contact.fullname}
                     />
@@ -67,7 +78,7 @@ const AddContacts = () => {
                       name="mobile"
                       placeholder="Phone number"
                       className="form-control"
-                      required={true}
+                      // required={true}
                       onChange={onContactChange}
                       value={contact.mobile}
                     />
@@ -78,7 +89,7 @@ const AddContacts = () => {
                       name="email"
                       placeholder="Email address"
                       className="form-control"
-                      required={true}
+                      // required={true}
                       onChange={onContactChange}
                       value={contact.email}
                     />
@@ -89,7 +100,7 @@ const AddContacts = () => {
                       name="job"
                       placeholder="job"
                       className="form-control"
-                      required={true}
+                      // required={true}
                       onChange={onContactChange}
                       value={contact.job}
                     />
@@ -98,7 +109,7 @@ const AddContacts = () => {
                     <select
                       name="group"
                       className="form-control"
-                      required={true}
+                      // required={true}
                       onChange={onContactChange}
                       value={contact.group}
                     >
