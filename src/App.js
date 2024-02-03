@@ -18,6 +18,7 @@ import {
 } from "./services/contactServices";
 import { contactContext } from "./context/contactContext";
 import { confirmAlert } from "react-confirm-alert"; // Import
+import _ from "lodash";
 
 const App = () => {
   const [contacts, setContacts] = useState([]);
@@ -57,22 +58,35 @@ const App = () => {
     }
   };
 
-  let filteredTimout;
-  const searchContacts = (query) => {
-    // console.log(query);
+  // let filteredTimout;
 
-    clearTimeout(filteredTimout);
+  // const searchContacts = (query) => {
+  //   // console.log(query);
+
+  //   clearTimeout(filteredTimout);
+
+  //   if (!query) return setFilteredContacts([...contacts]);
+
+  //   filteredTimout = setTimeout(() => {
+  //     setFilteredContacts(
+  //       contacts.filter((contact) => {
+  //         return contact.fullname.toLowerCase().includes(query.toLowerCase());
+  //       })
+  //     );
+  //   }, 1000);
+  // };
+
+  const searchContacts = _.debounce((query) => {
+    // console.log(query);
 
     if (!query) return setFilteredContacts([...contacts]);
 
-    filteredTimout = setTimeout(() => {
-      setFilteredContacts(
-        contacts.filter((contact) => {
-          return contact.fullname.toLowerCase().includes(query.toLowerCase());
-        })
-      );
-    }, 1000);
-  };
+    setFilteredContacts(
+      contacts.filter((contact) => {
+        return contact.fullname.toLowerCase().includes(query.toLowerCase());
+      })
+    );
+  }, 1000);
 
   // const searchContacts = (query) => {
   //   // console.log(query);
