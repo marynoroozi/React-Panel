@@ -14,7 +14,7 @@ import { contactContext } from "../../context/contactContext";
 // import * as Icon from "react-bootstrap-icons";
 
 const Contact = ({ Contact, confirmDelete }) => {
-  // const { removeContact } = useContext(contactContext);
+  const { leadingDebounce } = useContext(contactContext);
   return (
     <div className="col-md-6">
       <div className="card my-2">
@@ -58,7 +58,7 @@ const Contact = ({ Contact, confirmDelete }) => {
                 <PencilFill />
               </Link>
               <button
-                onClick={confirmDelete}
+                onClick={leadingDebounce(confirmDelete, 5000)}
                 className="btn my-1 align-self-center"
                 style={{ backgroundColor: PURPLE }}
               >

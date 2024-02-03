@@ -7,14 +7,7 @@ import {
   Contacts,
   Navbar,
 } from "./components";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router";
+import { Navigate, Route, Routes, useNavigate } from "react-router";
 import { useEffect } from "react";
 import {
   deleteContact,
@@ -25,6 +18,7 @@ import {
 } from "./services/contactServices";
 import { contactContext } from "./context/contactContext";
 import { confirmAlert } from "react-confirm-alert"; // Import
+import _ from "lodash";
 
 const App = () => {
   const [contacts, setContacts] = useState([]);
@@ -39,11 +33,11 @@ const App = () => {
   });
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [contactQuery, setContactQuery] = useState("");
   const [filteredContacts, setFilteredContacts] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("Contact Manager App");
     getContactsData();
     // console.log(forceRender, "forc");
     console.log(contacts, "after");
@@ -54,6 +48,7 @@ const App = () => {
       setLoading((prevLoading) => !prevLoading);
       const { data: contactsData } = await getAllContacts();
       setContacts(contactsData);
+      setFilteredContacts(contactsData);
       const { data: groupsData } = await getAllGroups();
       setGroups(groupsData);
       setLoading((prevLoading) => !prevLoading);
@@ -63,17 +58,58 @@ const App = () => {
     }
   };
 
-  const searchContacts = (e) => {
-    setContactQuery(e.target.value);
-    console.log(e.target.value);
-    const filtered = contacts.filter((contact) => {
-      return contact.fullname
-        .toLowerCase()
-        .includes(e.target.value.toLowerCase());
-    });
-    console.log(filtered);
-    setFilteredContacts(filtered);
-  };
+  // let filteredTimout;
+
+  // const searchContacts = (query) => {
+  //   // console.log(query);
+
+  //   clearTimeout(filteredTimout);
+
+  //   if (!query) return setFilteredContacts([...contacts]);
+
+  //   filteredTimout = setTimeout(() => {
+  //     setFilteredContacts(
+  //       contacts.filter((contact) => {
+  //         return contact.fullname.toLowerCase().includes(query.toLowerCase());
+  //       })
+  //     );
+  //   }, 1000);
+  // };
+
+  const searchContacts = _.debounce((query) => {
+    // console.log(query);
+
+    if (!query) return setFilteredContacts([...contacts]);
+
+    setFilteredContacts(
+      contacts.filter((contact) => {
+        return contact.fullname.toLowerCase().includes(query.toLowerCase());
+      })
+    );
+  }, 1000);
+
+  // const searchContacts = (query) => {
+  //   // console.log(query);
+
+  //   setFilteredContacts(
+  //     contacts.filter((contact) => {
+  //       return contact.fullname.toLowerCase().includes(query.toLowerCase());
+  //     })
+  //   );
+  // };
+
+  // function debounce(func, time) {
+  //   let timer;
+
+  //   // we should get a func with its arguments and cause a delay on its implementation and then return it.
+  //   return (...args) => {
+  //     clearTimeout(timer);
+
+  //     if (!args) return setFilteredContacts([...contacts]);
+
+  //     timer = setTimeout(() => func(...args), time);
+  //   };
+  // }
 
   const createContactForm = async (event) => {
     event.preventDefault();
@@ -165,6 +201,19 @@ const App = () => {
     });
   };
 
+  const leadingDebounce = (func, time) => {
+    let timer;
+    return (...args) => {
+      if (!timer) {
+        func(...args);
+      }
+
+      clearTimeout(timer);
+
+      timer = setTimeout(() => (timer = undefined), time);
+    };
+  };
+
   return (
     <contactContext.Provider
       value={{
@@ -172,7 +221,6 @@ const App = () => {
         setLoading,
         contact,
         setContacts,
-        contactQuery,
         contacts,
         filteredContacts,
         groups,
@@ -181,6 +229,7 @@ const App = () => {
         createContactForm,
         searchContacts,
         removeContact,
+        leadingDebounce,
       }}
     >
       <div className="App">
