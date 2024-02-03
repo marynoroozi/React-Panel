@@ -19,6 +19,7 @@ import {
 import { contactContext } from "./context/contactContext";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import _ from "lodash";
+import { contactSchema } from "./validations/contactValidation";
 
 const App = () => {
   const [contacts, setContacts] = useState([]);
@@ -35,6 +36,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [filteredContacts, setFilteredContacts] = useState([]);
   const navigate = useNavigate();
+  const [error, setError] = useState([]);
 
   useEffect(() => {
     console.log("Contact Manager App");
@@ -115,6 +117,7 @@ const App = () => {
     event.preventDefault();
     try {
       setLoading((prevLoading) => !prevLoading);
+      await contactSchema.validate(contact, { abortEarly: false });
       const { status, data } = await createContact(contact);
 
       /*
@@ -134,6 +137,7 @@ const App = () => {
         });
         // setFilteredContacts((prev) => [...prev, data]);
         setContact({});
+        setError([]);
         getContactsData();
         console.log(contacts, "contacts after");
         setLoading((prevLoading) => !prevLoading);
@@ -142,7 +146,8 @@ const App = () => {
         // setForceRender((preForcreRender) => !preForcreRender);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.inner);
+      setError(error.inner);
       setLoading((prevLoading) => !prevLoading);
     }
   };
@@ -224,6 +229,7 @@ const App = () => {
         contacts,
         filteredContacts,
         groups,
+        error,
         onContactChange,
         updateContactInfo,
         createContactForm,
