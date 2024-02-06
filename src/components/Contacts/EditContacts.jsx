@@ -2,14 +2,10 @@ import { Spinner } from "react-bootstrap";
 import { COMMENT, ORANGE, PURPLE } from "../../helpers/colors";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import Contact from "./Contact";
-import {
-  getAllGroups,
-  getContact,
-  getGroup,
-  updateContact,
-} from "../../services/contactServices";
+import { getContact, updateContact } from "../../services/contactServices";
 import { contactContext } from "../../context/contactContext";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { contactSchema } from "../../validations/contactValidation";
 
 const EditContacts = () => {
   const { loading, setLoading, contacts, setContacts, groups } =
@@ -34,38 +30,21 @@ const EditContacts = () => {
     }
   };
 
-  const updateContactInfo = async (e) => {
-    e.preventDefault();
+  const updateContactInfo = async (values) => {
     try {
       setLoading(true);
-      // Copy State
-      // Update State
-      // Send Request
-      // status === 200 -> do nothing
-      // status === error -> setState(copyState)
-      const { status, data } = await updateContact(contactId, contact);
+      const { status, data } = await updateContact(contactId, values);
 
-      /*
-       * NOTE
-       * 1- forceRender -> setForceRender(true)
-       * 2- Send request server
-       * 3- Update Local state
-       * 4- Update Local state before sending request to server
-       */
-
-      // console.log(data);
       if (status === 200) {
         setLoading(false);
 
         const allContacts = [...contacts];
-        console.log(allContacts, "all");
         const contactIndex = allContacts.findIndex(
           (c) => c.id === parseInt(contactId)
         );
-        console.log(contactIndex, "index");
+        console.log(contactIndex);
         allContacts[contactIndex] = { ...data };
         setContacts(allContacts);
-
         navigate("/contacts");
       }
     } catch (error) {
@@ -74,9 +53,9 @@ const EditContacts = () => {
     }
   };
 
-  const onContactChange = (event) => {
-    setContact({ ...contact, [event.target.name]: event.target.value });
-  };
+  // const onContactChange = (event) => {
+  //   setContact({ ...contact, [event.target.name]: event.target.value });
+  // };
 
   return (
     <>
@@ -99,99 +78,124 @@ const EditContacts = () => {
                 style={{ backgroundColor: "#44475a", borderRadius: "1em" }}
               >
                 <div className="col-md-8">
-                  <form
-                    onSubmit={(e, contactId) => updateContactInfo(e, contactId)}
+                  <Formik
+                    enableReinitialize
+                    initialValues={contact}
+                    validationSchema={contactSchema}
+                    onSubmit={(values) => {
+                      updateContactInfo(values);
+                    }}
                   >
-                    <div className="mb-2">
-                      <input
-                        name="fullname"
-                        type="text"
-                        className="form-control"
-                        value={contact.fullname}
-                        onChange={(e) => onContactChange(e)}
-                        required={true}
-                        placeholder="Fullname"
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <input
-                        name="photo"
-                        type="text"
-                        onChange={(e) => onContactChange(e)}
-                        value={contact.photo}
-                        className="form-control"
-                        required={true}
-                        placeholder="Image ur "
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <input
-                        name="mobile"
-                        type="number"
-                        onChange={(e) => onContactChange(e)}
-                        className="form-control"
-                        value={contact.mobile}
-                        required={true}
-                        placeholder="Phone number "
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <input
-                        name="email"
-                        type="email"
-                        onChange={(e) => onContactChange(e)}
-                        className="form-control"
-                        value={contact.email}
-                        required={true}
-                        placeholder="Email "
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <input
-                        name="job"
-                        type="text"
-                        onChange={(e) => onContactChange(e)}
-                        className="form-control"
-                        value={contact.job}
-                        required={true}
-                        placeholder="Job"
-                      />
-                    </div>
-                    <div className="mb-2">
-                      <select
-                        name="group"
-                        required={true}
-                        className="form-control"
-                        value={contact.group}
-                        onChange={onContactChange}
-                      >
-                        <option value="">Select a group</option>
-                        {Object.keys(groups).length > 0 &&
-                          groups.map((group) => (
-                            <option key={group.id} value={group.id}>
-                              {group.name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-                    <div className="mb-2">
-                      <button
-                        className="btn"
-                        type="submit"
-                        style={{ backgroundColor: PURPLE }}
-                      >
-                        {" "}
-                        Edit Contact
-                      </button>
-                      <Link
-                        to={"/contacts"}
-                        className="btn mx-2"
-                        style={{ backgroundColor: COMMENT }}
-                      >
-                        Cancel
-                      </Link>
-                    </div>
-                  </form>
+                    <Form>
+                      <div className="mb-2">
+                        <Field
+                          name="fullname"
+                          type="text"
+                          placeholder="Firstname and lastname"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                          name="fullname"
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          type="text"
+                          name="photo"
+                          placeholder="Image address"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                          name="photo"
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          name="mobile"
+                          type="number"
+                          placeholder="Phone number"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                          name="mobile"
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          name="email"
+                          type="text"
+                          placeholder="Email address"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                          name="email"
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          name="job"
+                          type="text"
+                          placeholder="job"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                          name="job"
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <Field
+                          name="group"
+                          as="select"
+                          className="form-control"
+                        >
+                          <option value="">select a group</option>
+                          {groups.length > 0 &&
+                            groups.map((group) => (
+                              <option key={group.id} value={group.id}>
+                                {" "}
+                                {group.name}{" "}
+                              </option>
+                            ))}
+                        </Field>
+                        <ErrorMessage
+                          render={(msg) => (
+                            <div className="text-danger">{msg}</div>
+                          )}
+                          name="group"
+                        />
+                      </div>
+                      <div className="mb-2">
+                        <input
+                          type="submit"
+                          className="btn"
+                          style={{ backgroundColor: PURPLE }}
+                          value="Edit This Contact"
+                        />
+                        <Link
+                          to={"/contacts"}
+                          className="btn mx-2"
+                          style={{ backgroundColor: COMMENT }}
+                        >
+                          Cancel
+                        </Link>
+                      </div>
+                    </Form>
+                  </Formik>
                 </div>
                 <div className="col-md-4">
                   <img

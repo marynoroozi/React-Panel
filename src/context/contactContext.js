@@ -7,7 +7,7 @@ export const contactContext = React.createContext({
   setContacts: () => {},
   contacts: [],
   groups: [],
-  error: [],
+  // error: [],
   filteredContacts: [],
   searchContacts: () => {},
   onContactChange: () => {},

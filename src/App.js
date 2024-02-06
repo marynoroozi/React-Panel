@@ -19,7 +19,7 @@ import {
 import { contactContext } from "./context/contactContext";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import _ from "lodash";
-import { contactSchema } from "./validations/contactValidation";
+// import { contactSchema } from "./validations/contactValidation";
 
 const App = () => {
   const [contacts, setContacts] = useState([]);
@@ -36,13 +36,13 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [filteredContacts, setFilteredContacts] = useState([]);
   const navigate = useNavigate();
-  const [error, setError] = useState([]);
+  // const [error, setError] = useState([]);
 
   useEffect(() => {
-    console.log("Contact Manager App");
+    // console.log("Contact Manager App");
     getContactsData();
     // console.log(forceRender, "forc");
-    console.log(contacts, "after");
+    // console.log(contacts, "after");
   }, []);
 
   const getContactsData = async () => {
@@ -113,12 +113,16 @@ const App = () => {
   //   };
   // }
 
-  const createContactForm = async (event) => {
-    event.preventDefault();
+  const createContactForm = async (
+    // event
+    values
+  ) => {
+    // event.preventDefault();
     try {
       setLoading((prevLoading) => !prevLoading);
-      await contactSchema.validate(contact, { abortEarly: false });
-      const { status, data } = await createContact(contact);
+      // await contactSchema.validate(contact, { abortEarly: false }); //abortEarly cause to return all errors
+      // const { status, data } = await createContact(contact);
+      const { status, data } = await createContact(values);
 
       /*
        * NOTE: Two ways to get all contacts after adding a new contact:
@@ -136,8 +140,8 @@ const App = () => {
           return [...prev, data];
         });
         // setFilteredContacts((prev) => [...prev, data]);
-        setContact({});
-        setError([]);
+        // setContact({});
+        // setError([]);
         getContactsData();
         console.log(contacts, "contacts after");
         setLoading((prevLoading) => !prevLoading);
@@ -146,8 +150,8 @@ const App = () => {
         // setForceRender((preForcreRender) => !preForcreRender);
       }
     } catch (error) {
-      console.log(error.inner);
-      setError(error.inner);
+      console.log(error);
+      // setError(error.inner);
       setLoading((prevLoading) => !prevLoading);
     }
   };
@@ -182,7 +186,7 @@ const App = () => {
             try {
               console.log(contacts, "before");
               setLoading((prevLoading) => !prevLoading);
-              const deleteItem = await deleteContact(id);
+              await deleteContact(id);
               // console.log(deleteItem, "delete");
               // setForceRender(true);
               getContactsData();
@@ -229,7 +233,7 @@ const App = () => {
         contacts,
         filteredContacts,
         groups,
-        error,
+        // error,
         onContactChange,
         updateContactInfo,
         createContactForm,
