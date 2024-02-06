@@ -11,6 +11,7 @@ const Contacts = () => {
 
   // console.log(filteredContacts, "from APP in contacts");
   // const showContacts = filteredContacts.length > 0 ? filteredContacts : contacts;
+  console.log(contacts, "updated contatxs");
 
   return (
     <>
