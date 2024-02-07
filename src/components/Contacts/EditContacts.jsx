@@ -1,16 +1,17 @@
 import { Spinner } from "react-bootstrap";
 import { COMMENT, ORANGE, PURPLE } from "../../helpers/colors";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { getContact, updateContact } from "../../services/contactServices";
 import { contactContext } from "../../context/contactContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { contactSchema } from "../../validations/contactValidation";
+import { useImmer } from "use-immer";
 
 const EditContacts = () => {
   const { loading, setLoading, contacts, setContacts, groups } =
     useContext(contactContext);
-  const [contact, setContact] = useState({});
+  const [contact, setContact] = useImmer({});
   const { contactId } = useParams();
   const navigate = useNavigate();
 
@@ -38,13 +39,17 @@ const EditContacts = () => {
       if (status === 200) {
         setLoading(false);
 
-        const allContacts = [...contacts];
-        const contactIndex = allContacts.findIndex(
-          (c) => c.id === parseInt(contactId)
-        );
-        console.log(contactIndex);
-        allContacts[contactIndex] = { ...data };
-        setContacts(allContacts);
+        // const allContacts = [...contacts];
+        // const contactIndex = allContacts.findIndex(
+        //   (c) => c.id === parseInt(contactId)
+        // );
+        // allContacts[contactIndex] = { ...data };
+        setContacts((draft) => {
+          const contactIndex = draft.findIndex(
+            (c) => c.id === parseInt(contactId)
+          );
+          draft[contactIndex] = { ...data };
+        });
         navigate("/contacts");
       }
     } catch (error) {
