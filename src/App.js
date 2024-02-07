@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import "./App.css";
 import {
   AddContacts,
@@ -14,27 +14,29 @@ import {
   getAllContacts,
   getAllGroups,
   createContact,
-  updateContact,
 } from "./services/contactServices";
 import { contactContext } from "./context/contactContext";
 import { confirmAlert } from "react-confirm-alert"; // Import
+import { useImmer } from "use-immer";
 import _ from "lodash";
 // import { contactSchema } from "./validations/contactValidation";
+// import { ToastContainer, toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [contact, setContact] = useState({
-    fullname: "",
-    photo: "",
-    mobile: 647,
-    email: "",
-    job: "",
-    group: 0,
-    id: 0,
-  });
-  const [groups, setGroups] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [filteredContacts, setFilteredContacts] = useState([]);
+  const [contacts, setContacts] = useImmer([]);
+  // const [contact, setContact] = useState({
+  //   fullname: "",
+  //   photo: "",
+  //   mobile: 647,
+  //   email: "",
+  //   job: "",
+  //   group: 0,
+  //   id: 0,
+  // });
+  const [groups, setGroups] = useImmer([]);
+  const [loading, setLoading] = useImmer(false);
+  const [filteredContacts, setFilteredContacts] = useImmer([]);
   const navigate = useNavigate();
   // const [error, setError] = useState([]);
 
@@ -83,9 +85,16 @@ const App = () => {
 
     if (!query) return setFilteredContacts([...contacts]);
 
-    setFilteredContacts(
-      contacts.filter((contact) => {
-        return contact.fullname.toLowerCase().includes(query.toLowerCase());
+    // setFilteredContacts(
+    //   contacts.filter((contact) => {
+    //     return contact.fullname.toLowerCase().includes(query.toLowerCase());
+    //   })
+    // );
+
+    //using Immer
+    setFilteredContacts((draft) =>
+      draft.filter((c) => {
+        return c.fullname.toLowerCase().includes(query.toLowerCase());
       })
     );
   }, 1000);
@@ -113,13 +122,10 @@ const App = () => {
   //   };
   // }
 
-  const createContactForm = async (
-    // event
-    values
-  ) => {
+  const createContactForm = async (values) => {
     // event.preventDefault();
     try {
-      setLoading((prevLoading) => !prevLoading);
+      setLoading((draft) => !draft);
       // await contactSchema.validate(contact, { abortEarly: false }); //abortEarly cause to return all errors
       // const { status, data } = await createContact(contact);
       const { status, data } = await createContact(values);
@@ -129,22 +135,28 @@ const App = () => {
        * 1- Render -> forceRender, setForceRender
        * 2- setContact(data)
        */
-      console.log(data, "data");
+      // console.log(data, "data");
       if (status === 201) {
+        toast.success("The contact has been successfully created");
+        setContacts((draft) => {
+          draft.push(data);
+        });
+        setFilteredContacts((draft) => {
+          draft.push(data);
+        });
         // const allContacts = [...contacts, data];
         // console.log(allContacts, "allContacts");
-        console.log(contacts, "contacts before");
+        // console.log(contacts, "contacts before");
 
-        setContacts((prev) => {
-          console.log(prev, "prev");
-          return [...prev, data];
-        });
+        // setContacts((prev) => {
+        //   // console.log(prev, "prev");
+        //   return [...prev, data];
+        // });
         // setFilteredContacts((prev) => [...prev, data]);
         // setContact({});
         // setError([]);
-        getContactsData();
-        console.log(contacts, "contacts after");
-        setLoading((prevLoading) => !prevLoading);
+        // getContactsData();
+        setLoading((draft) => !draft);
         // setForceRender((preForcreRender) => !preForcreRender);
         navigate("/contacts");
         // setForceRender((preForcreRender) => !preForcreRender);
@@ -156,26 +168,27 @@ const App = () => {
     }
   };
 
-  const updateContactInfo = async (e, id) => {
-    e.preventDefault();
-    try {
-      setLoading((prevLoading) => !prevLoading);
-      const { status } = await updateContact(id, contact);
-      setLoading((prevLoading) => !prevLoading);
-      if (status === 200) {
-        navigate("/contacts");
-      }
-    } catch (error) {
-      setLoading((prevLoading) => !prevLoading);
-      console.log(error);
-    }
-  };
+  // const updateContactInfo = async (e, id) => {
+  //   e.preventDefault();
+  //   try {
+  //     setLoading((prevLoading) => !prevLoading);
+  //     const { status } = await updateContact(id, contact);
+  //     setLoading((prevLoading) => !prevLoading);
+  //     if (status === 200) {
+  //       navigate("/contacts");
+  //     }
+  //   } catch (error) {
+  //     setLoading((prevLoading) => !prevLoading);
+  //     console.log(error);
+  //   }
+  // };
 
-  const onContactChange = (event) => {
-    setContact({ ...contact, [event.target.name]: event.target.value });
-  };
+  // const onContactChange = (event) => {
+  //   setContact({ ...contact, [event.target.name]: event.target.value });
+  // };
 
   const removeContact = (id, fullname) => {
+    const contactsBackup = [...contacts];
     confirmAlert({
       title: "Confirm to submit",
       message: "Are you sure to do this.",
@@ -184,19 +197,25 @@ const App = () => {
           label: "Yes",
           onClick: async () => {
             try {
-              console.log(contacts, "before");
-              setLoading((prevLoading) => !prevLoading);
-              await deleteContact(id);
+              // console.log(contacts, "before");
+              setLoading((draft) => !draft);
+              const { status } = await deleteContact(id);
+              toast.error("The contact has been successfully deleted");
               // console.log(deleteItem, "delete");
               // setForceRender(true);
+              if (status !== 200) {
+                setContacts(contactsBackup);
+                setFilteredContacts(contactsBackup);
+              }
               getContactsData();
               // console.log(forceRender, "forc");
-              console.log(contacts, "after");
-              setLoading((prevLoading) => !prevLoading);
+              setLoading((draft) => !draft);
               navigate("/contacts");
             } catch (error) {
-              setLoading((prevLoading) => !prevLoading);
               console.log(error);
+              setContacts(contactsBackup);
+              setFilteredContacts(contactsBackup);
+              setLoading((draft) => !draft);
             }
           },
         },
@@ -228,14 +247,14 @@ const App = () => {
       value={{
         loading,
         setLoading,
-        contact,
+        // contact,
         setContacts,
         contacts,
         filteredContacts,
         groups,
         // error,
-        onContactChange,
-        updateContactInfo,
+        // onContactChange,
+        // updateContactInfo,
         createContactForm,
         searchContacts,
         removeContact,
@@ -243,6 +262,8 @@ const App = () => {
       }}
     >
       <div className="App">
+        {/* <ToastContainer theme="colored" /> */}
+        <Toaster />
         <Navbar />
         <Routes>
           <Route path="/" element={<Navigate to="/contacts" />} />

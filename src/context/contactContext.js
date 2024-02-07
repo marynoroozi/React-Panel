@@ -3,7 +3,7 @@ import React from "react";
 export const contactContext = React.createContext({
   loading: false,
   setLoading: () => {},
-  contact: {},
+  // contact: {},
   setContacts: () => {},
   contacts: [],
   groups: [],
@@ -12,7 +12,7 @@ export const contactContext = React.createContext({
   searchContacts: () => {},
   onContactChange: () => {},
   createContactForm: () => {},
-  updateContactInfo: () => {},
+  // updateContactInfo: () => {},
   removeContact: () => {},
   // debounce: () => {},
   leadingDebounce: () => {},
