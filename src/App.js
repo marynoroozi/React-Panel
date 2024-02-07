@@ -20,6 +20,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import { useImmer } from "use-immer";
 import _ from "lodash";
 // import { contactSchema } from "./validations/contactValidation";
+import { ToastContainer, toast } from "react-toastify";
 
 const App = () => {
   const [contacts, setContacts] = useImmer([]);
@@ -135,6 +136,7 @@ const App = () => {
        */
       // console.log(data, "data");
       if (status === 201) {
+        toast.success("The contact has been successfully created");
         setContacts((draft) => {
           draft.push(data);
         });
@@ -197,6 +199,7 @@ const App = () => {
               // console.log(contacts, "before");
               setLoading((draft) => !draft);
               const { status } = await deleteContact(id);
+              toast.error("The contact has been successfully deleted");
               // console.log(deleteItem, "delete");
               // setForceRender(true);
               if (status !== 200) {
@@ -258,6 +261,7 @@ const App = () => {
       }}
     >
       <div className="App">
+        <ToastContainer theme="colored" />
         <Navbar />
         <Routes>
           <Route path="/" element={<Navigate to="/contacts" />} />

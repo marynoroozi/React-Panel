@@ -7,6 +7,7 @@ import { contactContext } from "../../context/contactContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { contactSchema } from "../../validations/contactValidation";
 import { useImmer } from "use-immer";
+import { toast } from "react-toastify";
 
 const EditContacts = () => {
   const { loading, setLoading, contacts, setContacts, groups } =
@@ -38,6 +39,7 @@ const EditContacts = () => {
 
       if (status === 200) {
         setLoading(false);
+        toast.info("The contact has been successfully updated");
 
         // const allContacts = [...contacts];
         // const contactIndex = allContacts.findIndex(
