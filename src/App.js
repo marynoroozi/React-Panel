@@ -20,8 +20,8 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import { useImmer } from "use-immer";
 import _ from "lodash";
 // import { contactSchema } from "./validations/contactValidation";
-// import { ToastContainer, toast } from "react-toastify";
-import toast, { Toaster } from "react-hot-toast";
+import { ToastContainer, toast } from "react-toastify";
+// import toast, { Toaster } from "react-hot-toast";
 
 const App = () => {
   const [contacts, setContacts] = useImmer([]);
@@ -262,8 +262,8 @@ const App = () => {
       }}
     >
       <div className="App">
-        {/* <ToastContainer theme="colored" /> */}
-        <Toaster />
+        <ToastContainer theme="colored" />
+        {/* <Toaster /> */}
         <Navbar />
         <Routes>
           <Route path="/" element={<Navigate to="/contacts" />} />
