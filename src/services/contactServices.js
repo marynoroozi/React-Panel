@@ -1,5 +1,5 @@
 import axios from "axios";
-const contactServer_url = "http://localhost:9000";
+const contactServer_url = "https://m.noroozi.github.io/React-panel";
 
 // @desc Get All Contacts
 // @route GET http://localhost:9000/contacts
