@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/React-panel/static/css/main.eb5d9a60.css",
-    "main.js": "/React-panel/static/js/main.0279b371.js",
+    "main.js": "/React-panel/static/js/main.a216173d.js",
     "static/media/Spinner.gif": "/React-panel/static/media/Spinner.5b35cef0ce49e2af8525.gif",
     "static/media/no-found.gif": "/React-panel/static/media/no-found.8a3fe9fd54d21c85d260.gif",
     "static/media/man-taking-note.png": "/React-panel/static/media/man-taking-note.578e1679689f39584d15.png",
@@ -11,10 +11,10 @@
     "static/media/KGPrimaryItalics.woff2": "/React-panel/static/media/KGPrimaryItalics.263de2be3c64dd0e4b3c.woff2",
     "index.html": "/React-panel/index.html",
     "main.eb5d9a60.css.map": "/React-panel/static/css/main.eb5d9a60.css.map",
-    "main.0279b371.js.map": "/React-panel/static/js/main.0279b371.js.map"
+    "main.a216173d.js.map": "/React-panel/static/js/main.a216173d.js.map"
   },
   "entrypoints": [
     "static/css/main.eb5d9a60.css",
-    "static/js/main.0279b371.js"
+    "static/js/main.a216173d.js"
   ]
 }
