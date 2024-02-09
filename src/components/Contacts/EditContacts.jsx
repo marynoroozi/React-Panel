@@ -39,8 +39,8 @@ const EditContacts = () => {
 
       if (status === 200) {
         setLoading(false);
-        // toast.info("The contact has been successfully updated");
-        toast.success("The contact has been successfully updated");
+        toast.info("The contact has been successfully updated");
+        // toast.success("The contact has been successfully updated");
 
         // const allContacts = [...contacts];
         // const contactIndex = allContacts.findIndex(
